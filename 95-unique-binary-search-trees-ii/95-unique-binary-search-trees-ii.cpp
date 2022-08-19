@@ -15,7 +15,7 @@ public:
         vector<TreeNode*> res;
         if (start > end) return {NULL};
         
-        if (start == end) return {new TreeNode(start)};
+        //if (start == end) return {new TreeNode(start)};
         
         for (int i = start; i <= end; i++) {
             vector<TreeNode*> left = rec(start, i-1), right = rec(i+1, end);
