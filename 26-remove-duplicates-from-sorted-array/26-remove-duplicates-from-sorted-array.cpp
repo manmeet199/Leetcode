@@ -1,7 +1,23 @@
 class Solution {
 public:
-    int removeElement(vector<int>& nums, int val) {
-         nums.erase(remove(nums.begin(), nums.end(), val), nums.end());
-        return nums.size();
+    int removeDuplicates(vector<int>& nums) {
+    //O(n) solution            O(nlogn) solution can be achieved by hashset
+     int n=nums.size();
+        if(n==0)
+            return 0;
+     
+     int i,j;
+        i=0;
+for(int j=1; j<n; j++)
+{
+if(nums[i]!=nums[j])
+{
+    i++;
+    nums[i]=nums[j];
+}
+    
+    
+    }
+        return i+1;
     }
 };
