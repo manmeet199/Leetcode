@@ -33,10 +33,10 @@ public:
           
            
         }
-        if(nextp!=NULL)
-        {
-            head->next=reverseKGroup(nextp,k);
-        }
+       if(nextp!=NULL)
+       {
+           head->next=reverseKGroup(nextp,k);
+       }
         return prev;
     }
 };
