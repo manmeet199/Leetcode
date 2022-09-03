@@ -1,6 +1,7 @@
 class Solution {
 public:
-    void nextPermutation(vector<int>& nums) {
+    
+   void nextPermutation(vector<int>& nums) {
        int breakPoint = -1;
 
     // find a breakpoint:
