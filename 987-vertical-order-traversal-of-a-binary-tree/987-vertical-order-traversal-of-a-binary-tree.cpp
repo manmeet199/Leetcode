@@ -12,24 +12,41 @@
 class Solution {
 public:
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-      	map<int, vector<int> > m;  // when iterate map, key is already the order of x-axis
-	queue<pair<int, TreeNode*> > q; // for level traversal
-	q.push(make_pair(0, root));  // root default x-axis is 0
-	while(!q.empty()) {
-		multiset<pair<int, int> > tmp;  // k: x-axis, v:val Already solved the case when the position is ths same
-		int len=q.size();
-		for(int i=0;i<len;++i) {
-			auto p=q.front();q.pop();
-			tmp.insert(make_pair(p.first, p.second->val));
-			if (p.second->left) q.push(make_pair(p.first-1, p.second->left));
-			if (p.second->right) q.push(make_pair(p.first+1, p.second->right));
-		}
-
-		for(auto p : tmp) m[p.first].push_back(p.second);
-	}
-
-	vector<vector<int> > res;
-	for(auto kv : m) res.push_back(kv.second);
-	return res;
+   map<int,vector<int>> m;
+        queue<pair<int,TreeNode*>> q;
+      
+        q.push({0,root});
+        while(!q.empty())
+        {
+            multiset<pair<int,int>> tmp;
+            int n=q.size();
+            for(int i=0; i<n; i++)
+            {
+            auto p=q.front();
+            q.pop();
+            tmp.insert({p.first,p.second->val});
+            if(p.second->left)
+                q.push({p.first-1,p.second->left});
+            if(p.second->right)
+                q.push({p.first+1,p.second->right});
+            
+            
+            
+        }
+        
+        for(auto p: tmp)
+        {
+            
+            m[p.first].push_back(p.second);
+            
+        }
+        }
+        
+        vector<vector<int>> res;
+        for(auto p: m)
+        {
+            res.push_back(p.second);
+        }
+        return res;
     }
 };
