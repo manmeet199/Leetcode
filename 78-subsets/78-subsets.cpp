@@ -1,25 +1,25 @@
 class Solution {
 public:
-    
-    void helper(int ind, vector<vector<int>>& ans, vector<int> &subs, vector<int>& nums)
-    {
+      void func(int ind, vector<int> &nums, vector<int> &ds, vector<vector<int>> &ans)
         
-        if(ind==nums.size())
+    {
+        ans.push_back(ds);
+        for(int i=ind; i<nums.size(); i++)
         {
-            ans.push_back(subs);
-            return;
+            // if(i!=ind and nums[i]==nums[i-1])
+            //     continue;
+            
+            ds.push_back(nums[i]);
+            func(i+1,nums,ds,ans);
+            ds.pop_back();
         }
-       helper(ind+1,ans,subs,nums);
-        subs.push_back(nums[ind]);
-        helper(ind+1,ans,subs,nums);//skip
-        subs.pop_back();
         
     }
-    
     vector<vector<int>> subsets(vector<int>& nums) {
-        vector<vector<int>> ans;
-        vector<int> subs;
-        helper(0,ans,subs,nums);
-            return ans;
+         vector<vector<int>> ans;
+        vector<int> ds;
+        sort(nums.begin(),nums.end());//to apply our logic
+        func(0,nums,ds,ans);
+        return ans;
     }
 };
