@@ -20,13 +20,15 @@ public:
             len++;
             cur=cur->next;
         }
-        cur->next=head;
+    cur->next=head;
         cur=head;
-        for(int i=0; i<len-(k%len)-1; i++)
+        for(int i=0; i<len-k%len-1; i++)
+            
         {
-
-        cur=cur->next;
+            
+            cur=cur->next;
         }
+        
         head=cur->next;
         cur->next=NULL;
         return head;
