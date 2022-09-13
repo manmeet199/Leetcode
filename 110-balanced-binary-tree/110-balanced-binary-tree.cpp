@@ -18,20 +18,20 @@ public:
         return 1+max(height(root->left),height(root->right));
     }
     bool isBalanced(TreeNode* root) {
-      if(!root)
-          return true;
-       int x=height(root->left);
+        if(!root)
+            return 1;
+        int x=height(root->left);
         int y=height(root->right);
-        if(!isBalanced(root->left))
-            return false;
+        
         if(!isBalanced(root->right))
+            return 0;
+        if(!isBalanced(root->left))
         {
-            return false;
+            return 0;
         }
         if(abs(x-y)<=1)
-        {
-            return true;
-        }
-        return false;
+            return 1;
+        
+        return 0;
     }
 };
