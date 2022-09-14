@@ -1,25 +1,28 @@
 class Solution {
 public:
     
-    void helper(string s, int ind,  vector<string> &tmp,  vector<vector<string>> &ans)
-    {
-        if(ind==s.size())
+    
+    void helper(string &s, int ind, vector<string>& tmp, vector<vector<string>> &ans)
         {
-            ans.push_back(tmp);
-            return;
-        }
-        for(int i=ind; i<s.size(); i++)
+if(ind==s.size())
+{
+    ans.push_back(tmp);
+    return;
+}
+        for(int j=ind; j<s.size(); j++)
         {
-            if(palindrome(s,ind,i))
+            if(palindrome(s,ind,j))
             {
-                tmp.push_back(s.substr(ind,i-ind+1));
-                helper(s,i+1,tmp,ans);
+                tmp.push_back(s.substr(ind,j-ind+1));
+                helper(s,j+1,tmp,ans);
                 tmp.pop_back();
+                
             }
+            
         }
-    }
         
-      bool palindrome(string s, int start, int end)
+    }
+    bool palindrome(string s, int start, int end)
      {
          while(start<=end)
          {
