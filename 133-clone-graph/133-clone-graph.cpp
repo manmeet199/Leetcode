@@ -21,31 +21,29 @@ public:
 
 class Solution {
 public:
-    void dfs(Node* node, Node *copy, vector<Node*> &vis)
-    {
-        vis[copy->val]=copy;
-        for(auto it: node->neighbors)
+       unordered_map<Node* , Node*> mp;
+    Node* cloneGraph(Node* node) {
+     
+     
+        if(node == NULL) // if node is null, then simply return null
         {
-            if(vis[it->val]==NULL)
+            return NULL;
+        }
+        
+        // for a node, we will check whether we already creates a copy of thiis or not. If it is present in map that means we already creates a copy of this.
+        //But if not present in map, that means we have not a copy of this.
+        // Also, if we create a copy, then being a good neighbor, we find whether our neighbor have a copy or not, so we will travel all around our adjcant.
+        
+        if(mp.find(node) == mp.end()) // if not present in map
+        {
+            mp[node] = new Node(node -> val, {}); // make a copy
+            
+            for(auto adj: node -> neighbors) // travel in adjcant
             {
-                Node* newNode=new Node(it->val);
-                (copy->neighbors).push_back(newNode);
-                dfs(it,newNode,vis);
-                
-            }
-            else
-            {
-                (copy->neighbors).push_back(vis[it->val]);  // if the node is already visited but is neighbour of it then add it to the current node's adjacency list
+                mp[node] -> neighbors.push_back(cloneGraph(adj)); //add copy
             }
         }
-    }
-    Node* cloneGraph(Node* node) {
-        if(node==NULL)
-            return NULL;
-        vector<Node*> vis(1000,NULL);
-        Node * copy=new Node(node->val);
-        dfs(node,copy,vis);
-        return copy;
         
+        return mp[node]; // and at last, return mp[node] as till now we clone our whole graph
     }
 };
