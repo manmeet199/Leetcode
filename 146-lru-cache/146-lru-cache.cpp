@@ -1,94 +1,74 @@
-
-   struct Node {
+class Node {
+   public:
     int key;
-    int val;
-    Node *prev;
-    Node *next;
-    
-    Node() {
-        key = -1;
-        val = -1;
-        prev = NULL;
-        next = NULL;
-    }
-    Node(int k, int v) {
-        key = k;
-        val = v;
-        prev = NULL;
-        next = NULL;
-    }
-    
-};
-struct LinkList {
-    int size;
-    int cap;
-    Node *head;
-    Node *tail;
-    LinkList(int c) : size(0), cap(c) {
-        head = new Node();
-        tail = new Node();
-        head->next = tail;
-        tail->prev = head;
+    int value;
+    Node* pre;
+    Node* next;
+    Node(int key, int value) {
+        this->key = key;
+        this->value = value;
+        this->pre = nullptr;
+        this->next = nullptr;
     }
 };
 
 class LRUCache {
-private:
-    LinkList list;
-    unordered_map<int, Node*> m;
-public:
-    LRUCache(int capacity) : list(LinkList(capacity)) {
+   private:
+    int capacity;
+    unordered_map<int, Node*> cache;
+    Node* head;
+    Node* tail;
+
+    void remove(Node* n) {
+        Node* nPre = n->pre;
+        Node* nNext = n->next;
+        nPre->next = nNext;
+        nNext->pre = nPre;
     }
-    
-    void add(Node *n) {
-        n->next = list.head->next;
-        n->prev = list.head;
-        list.head->next->prev = n;
-        list.head->next = n;
+
+    void insert(Node* n) {
+        Node* first = head->next;
+        head->next = n;
+        n->pre = head;
+        n->next = first;
+        first->pre = n;
     }
-    
+
+   public:
+    LRUCache(int capacity) {
+        this->capacity = capacity;
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+        head->next = tail;
+        tail->pre = head;
+    }
+
     int get(int key) {
-        Node *n = getNode(key);
-        if (!n) {
+        if (cache.find(key) == cache.end()) {
             return -1;
         }
 
-        n->prev->next = n->next;
-        n->next->prev = n->prev;
-        add(n);
-        return n->val;
+        Node* n = cache[key];
+        remove(n);
+        insert(n);
+
+        return n->value;
     }
-    
-    Node *getNode(int key) {
-        Node *n =  m[key];
-        if (!n) return NULL;
-        if (!n->next) return NULL;
-        return n;
-    }
-    
+
     void put(int key, int value) {
-        Node *n = getNode(key);
-        if (n) {
-            n->val = value;
-            n->prev->next = n->next;
-            n->next->prev = n->prev;
-            
-            add(n);
-            return;
+        if (cache.find(key) != cache.end()) {
+            remove(cache[key]);
         }
-        n = new Node(key, value);
-        m[key] = n;
-        add(n);
-        list.size++;
-        if (list.size>list.cap) {
-            Node *last = list.tail->prev;
-            last->prev->next = list.tail;
-            list.tail->prev = last->prev;
-            // m.erase(last->key);
-            // delete last;
-            last->next = NULL;
-            last->prev = NULL;
-            list.size--;
+
+        Node* n = new Node(key, value);
+        insert(n);
+        cache[key] = n;
+
+        if (cache.size() > capacity) {
+            Node* t = tail->pre;
+            cache.erase(t->key);
+            remove(t);
+            delete(t);
         }
     }
 };
