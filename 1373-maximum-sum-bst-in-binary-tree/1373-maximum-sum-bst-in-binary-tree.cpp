@@ -9,46 +9,54 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class NodeValue {
-public:
-    int minNode, maxNode, maxSum;
-    
-    NodeValue(int minNode, int maxNode, int maxSum)
-    {
-        this->minNode = minNode;
-        this->maxNode = maxNode;
-        this->maxSum = maxSum;
-    }
-};
 
 class Solution {
+public:
+class sumBST
+{
+public:
+    int maxi;
+    int mini;
+    bool isBST;
+    int sum;
+};
+
+sumBST solve(TreeNode* root ,int &ans)
+{
+    if(root == NULL)
+        return {INT_MIN ,INT_MAX ,true ,0};
     
-private:
-    NodeValue maxSumBSTHelper(TreeNode* root)
+    sumBST left = solve(root->left ,ans);
+    sumBST right = solve(root->right ,ans);
+    
+    sumBST currNode;
+    
+    currNode.sum = left.sum + right.sum + root->val;
+    currNode.maxi = max(root->val ,right.maxi);
+    currNode.mini = min(root->val ,left.mini);
+    
+    if(left.isBST && right.isBST && (root->val > left.maxi && root->val < right.mini))
     {
-        if(!root) return NodeValue(INT_MAX, INT_MIN, 0);
-        
-        auto left = maxSumBSTHelper(root->left);
-        auto right = maxSumBSTHelper(root->right);
-        
-        if(left.maxNode < root->val && root->val < right.minNode)
-        {
-            //if BT is BST
-            sum = max(sum, root->val + left.maxSum + right.maxSum);
-            
-            return NodeValue(min(root->val, left.minNode), max(root->val, right.maxNode), root->val + left.maxSum + right.maxSum);
-            
-        }
-        
-        return NodeValue(INT_MIN, INT_MAX, max(left.maxSum, right.maxSum));   // if any subtree not bst
+        currNode.isBST = true;
+        currNode.sum = left.sum + right.sum + root->val;
+    }
+    else
+    {
+        currNode.isBST = false;
     }
     
-public:
-    int sum=0;
-    int maxSumBST(TreeNode* root) 
+    if(currNode.isBST)
     {
-        maxSumBSTHelper(root);
-        return sum>0 ? sum : 0;
-        
+        ans = max(ans ,currNode.sum);
+    }
+    return currNode;
+}
+
+
+int maxSumBST(TreeNode* root) {
+    int Sum =0;
+    sumBST temp = solve(root ,Sum);
+    return Sum;
+
     }
 };
