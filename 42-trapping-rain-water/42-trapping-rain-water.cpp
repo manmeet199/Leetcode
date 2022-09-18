@@ -4,36 +4,35 @@ public:
         int n=height.size();
         int left=0;
         int right=n-1;
-        int leftmax=0;
-        int rightmax=0;
+        int leftm=0;
+        int rightm=0;
         int ans=0;
         while(left<=right)
         {
             if(height[left]<=height[right])
             {
-                
-                if(leftmax<height[left])
+                if(height[left]>leftm)
                 {
-                    leftmax=height[left];
+                    leftm=height[left];
                 }
                 else
                 {
-                  ans+=leftmax-height[left];  
+                  
+                    ans+=leftm-height[left];
                 }
                 left++;
             }
             else
             {
-                if(rightmax<height[right])
+                if(height[right]>rightm)
                 {
-                    rightmax=height[right];
+                    rightm=height[right];
                 }
                 else
                 {
-                  ans+=rightmax-height[right];  
+                    ans+=rightm-height[right];
                 }
                 right--;
-                
             }
         }
         return ans;
