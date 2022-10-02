@@ -18,7 +18,7 @@ public:
     vector<vector<int>> subsetsWithDup(vector<int>& nums) {
         vector<vector<int>> ans;
         vector<int> ds;
-        sort(nums.begin(),nums.end());//to apply our logic
+        sort(nums.begin(),nums.end());//to apply our logic check for duplicates
         func(0,nums,ds,ans);
         return ans;
     }
