@@ -1,18 +1,50 @@
 class Solution {
 public:
-    int maxProfit(vector<int>& prices) {
-        int buy1=INT_MAX;
-        int profit1=INT_MIN;
-        int buy2=INT_MAX;
-        int profit2=INT_MIN;
-        int n=prices.size();
-        for(int i=0; i<n; i++)
-        {
-             buy1=min(buy1,prices[i]);
-             profit1=max(profit1,prices[i]-buy1);
-             buy2=min(buy2,prices[i]-profit1);// utitlize the profit gained earlier
-             profit2=max(profit2,prices[i]-buy2);
+     int solve(vector<int>&prices, int day, int transactionsLeft, vector<vector<int>> &Memo){
+        
+        if(day == prices.size()){
+            return 0;
         }
-        return profit2;
+        
+        if(transactionsLeft == 0){
+            return 0;
+        }
+        
+        int &ans = Memo[day][transactionsLeft]; 
+        
+        if(ans != -1){ // if problem has already been solved 
+            return ans;
+        }
+        
+        // choice 1
+        // no transaction today
+        int ans1 = solve(prices, day + 1, transactionsLeft, Memo);
+        
+        
+        // choice 2
+        // doing the possible transaction today     
+        int ans2 = 0;
+        bool buy = (transactionsLeft % 2 == 0);
+        
+        if(buy == true){ // buy
+            ans2 = -prices[day] + solve(prices, day + 1, transactionsLeft - 1, Memo);
+        }else{ // sell
+            ans2 = prices[day] + solve(prices, day + 1, transactionsLeft - 1, Memo);
+        }
+        
+        return ans = max(ans1, ans2); // store ans in memo before returning
+        
+        
+    }
+    
+    
+    int maxProfit(vector<int>& prices) {
+        
+        vector<vector<int>> Memo(prices.size(), vector<int>(5, -1));
+        int ans = solve(prices, 0, 4, Memo);
+        return ans;
+        
+    
+        
     }
 };
