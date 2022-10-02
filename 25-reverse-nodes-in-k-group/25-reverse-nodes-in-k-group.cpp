@@ -11,6 +11,7 @@
 class Solution {
 public:
     ListNode* reverseKGroup(ListNode* head, int k) {
+        ///for ll of size<k
        ListNode* temp=head;
         for(int i=0;i<k;i++)
         {
@@ -18,6 +19,8 @@ public:
                 return head;
             temp=temp->next;
         }
+        
+        // reverse first k nodes then recursive
         ListNode* cur=head;
         ListNode* prev=NULL;
         ListNode* nextp;
