@@ -19,7 +19,7 @@ public:
         ListNode* fast=head;
         if(!slow)
         {
-            return head->next;
+            return head->next;//imp
         }
         while(slow->next!=NULL)
         {
